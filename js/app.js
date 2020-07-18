@@ -38,7 +38,7 @@ clear.addEventListener("click", function(event) {
 
 // Show date 
 const currentDate = new Date(); // in-built function
-const days = [`Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`]; //.getday/.getmonth func picks number 0-6 or 0-11 and picks from array
+const days = [`Sunday`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`]; //.getday/.getmonth func picks number 0-6 or 0-11 and picks from array
 const months = [`Jan`, `Feb`, `Mar`, `Apr`, `May`, `Jun`, `Jul`, `Aug`, `Sep`, `Oct`, `Nov`, `Dec`];
 function showdate(date) { // "date" being passed through can be named anything
     console.log(`currentDate`, date) // you can name your console log
