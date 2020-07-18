@@ -8,6 +8,9 @@ const input = document.getElementById("input");
 const completed = "fa-check-circle";
 const incomplete = "fa-circle-thin";
 const line_through = "lineThrough";
+const easy = "squareYellow"
+const medium = "squareOrange"
+const hard ="squareRed"
 
 // Varaibles
 let LIST = []
@@ -26,7 +29,7 @@ if(data) {
 // Loads list
 function loadList(array) {
     array.forEach(function(item) {
-        addToDo(item.name, item.id, item.done, item.trash);
+        addToDo(item.name, item.id, item.done, item.trash, item.priority);
     })
 }
 
@@ -50,15 +53,17 @@ function showdate(date) { // "date" being passed through can be named anything
 dateElement.innerHTML = showdate(currentDate) //using innerHTML of dateElement
 
 // Add todo function
-function addToDo(toDo, id, done, trash) {
+function addToDo(toDo, id, done, trash, priority) {
     if(trash) { 
         return;
     } // if trash is true the code below wont run
     const status = done ? completed : incomplete;
     const line = done ? line_through : ""; // ${} acts as place holder, status could be complete or incomplete true/false
+    const color = priority
     const item = `<li class="item">
                     <i class="fa ${status} co" job="complete" id=${id}></i>
                     <p class="text ${line}">${toDo}</p>
+                    <i class="${color}" job="change" id=${id}></i>
                     <i class="fa fa-trash-o de" job="delete" id=${id}></i>
                   </li>`
     const position = "beforeend"
@@ -71,12 +76,13 @@ document.addEventListener("keyup", function(event) {
         const toDo = input.value;
         // if something is in the text field fucntion "addToDo" will run
         if(toDo) {
-            addToDo(toDo, id, false, false);
+            addToDo(toDo, id, false, false, easy);
             LIST.push({
                 name : toDo,
                 id : id,
                 done : false,
                 trash : false,
+                priority : easy
             })
             // add item to localstorage (needs to be added where the LIST array is updated)
             localStorage.setItem("TODO", JSON.stringify(LIST));
@@ -102,6 +108,19 @@ function removeToDo(element) {
     LIST[element.id].trash = true;
 }
 
+// Change colour
+function changeColour(element) {
+    if(LIST[element.id].priority === easy) {
+        LIST[element.id].priority = medium
+    } else if(LIST[element.id].priority === medium) {
+        LIST[element.id].priority = hard
+    } else if(LIST[element.id].priority === hard) {
+        LIST[element.id].priority = easy
+    }
+    console.log(LIST)
+    localStorage.setItem("TODO", JSON.stringify(LIST));
+}
+
 // Making list buttons work
 list.addEventListener("click", function(event) { 
     const element = event.target;
@@ -110,7 +129,11 @@ list.addEventListener("click", function(event) {
         completeToDo(element);
     } else if(elementJOB == "delete") {
         removeToDo(element);
+    } else if(elementJOB == "change") {
+        changeColour(element);
     }
+    console.log(element.attributes.job.value)
     // add item to localstorage (needs to be added where the LIST array is updated)
     localStorage.setItem("TODO", JSON.stringify(LIST));
+    location.reload();
 })
