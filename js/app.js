@@ -3,6 +3,7 @@ const clear = document.querySelector(".clear"); //.clear because it is a class, 
 const dateElement = document.getElementById("date");
 const list = document.getElementById("list");
 const input = document.getElementById("input");
+const add = document.querySelector(".add-to-do")
 
 // Classes names
 const completed = "fa-check-circle";
@@ -10,7 +11,7 @@ const incomplete = "fa-circle-thin";
 const line_through = "lineThrough";
 const easy = "squareYellow"
 const medium = "squareOrange"
-const hard ="squareRed"
+const hard = "squareRed"
 
 // Varaibles
 let LIST = []
@@ -37,6 +38,25 @@ function loadList(array) {
 clear.addEventListener("click", function(event) {
     localStorage.clear();
     location.reload();
+})
+
+// Add button click
+add.addEventListener("click", function() {
+    const toDo = input.value;
+    if(toDo) {
+        addToDo(toDo, id, false, false, easy);
+        LIST.push({
+            name : toDo,
+            id : id,
+            done : false,
+            trash : false,
+            priority : easy
+        })
+        localStorage.setItem("TODO", JSON.stringify(LIST));
+            id++; // incrementing id
+    }
+    input.value = ""
+
 })
 
 // Show date 
